@@ -1,0 +1,30 @@
+<!-- list of unapproved articles -->
+{% extends 'base.html' %}
+{% block title %}
+    Unapproved Article List
+{% endblock %}
+
+{% block content %}
+    <h1>Unapproved Article List</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <ul>
+        {% for article in articles %}
+            {% if not article.approved %}
+                <li>
+                    <a href="{% url 'eNews:article' article.id %}">{{ article.title }}</a>
+                    <p>{{ article.content }}</p>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+<!-- Navigation Buttons -->
+ <div>
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+<!--  update article -->
+{% extends 'base.html' %}
+{% block title %}
+    Update Article
+{% endblock %}
+
+{% block content %}
+    <h1>Update Article</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Update</button>
+    </form>
+
+
+<!-- Navigation Buttons -->
+ <div style="margin-top: 10px;">
+
+    <a href="{% url 'eNews:article_list' %}">
+        <button class="btn btn-secondary">Back to Article List</button>
+    </a>
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+
+{% endblock %}

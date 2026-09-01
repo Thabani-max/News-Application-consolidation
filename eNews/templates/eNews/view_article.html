@@ -1,0 +1,95 @@
+<!-- view article -->
+{% extends 'base.html' %}
+{% block title %}
+    View Article
+{% endblock %}
+{% block content %}
+    <h1>Article: {{ article.title }}</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <p>Content: {{ article.content }}</p>
+    <p>Author: {{ article.author.first_name }} {{ article.author.last_name }}</p>
+    <p>Date: {{ article.created_at }}</p>
+    <p>Status: {{ article.status }}</p>
+    {% if article.publisher != None %}
+        <p>Publisher: {{ article.publisher.name }}</p>
+    {% endif %}
+
+<div style="margin-top: 10px;">
+    {% if not is_reader %}
+        <form action="{% url 'eNews:edit_article' article.id %}">
+            <button type="submit" class="btn btn-primary">Update Article</button>
+        </form>
+    {% endif %}
+</div>
+
+<div style="margin-top: 10px;">
+    {% if not is_reader %}
+        <form method="post" action="{% url 'eNews:delete_article' article.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete Article</button>
+        </form>
+    {% endif %}
+</div>
+
+<div style="margin-top: 10px;">
+    {% if is_journalist %}
+        {% if article.publisher == None %}
+            {% if article.approved is False %}
+                {% if article.author == request.user %}
+                    <form method="post" action="{% url 'eNews:publish_independent_article' article.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Publish</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
+
+<div style="margin-top: 10px;">
+    {% if is_editor %}
+        {% if article.approved is False %}
+            {% if article.publisher != None %}
+                <form method="post" action="{% url 'eNews:approve_article' article.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Approve</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
+
+<div style="margin-top: 10px;">
+    {% if is_editor %}
+        {% if article.approved is False %}
+            {% if article.publisher != None %}
+                <form method="post" action="{% url 'eNews:disapprove_article' article.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">Reject</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
+
+<!-- navigation buttons -->
+<div style="margin-top: 10px;">
+
+    {% if not is_journalist %}
+        <a href="{% url 'eNews:article_list' %}">
+            <button class="btn btn-secondary">Back to Article List</button>
+        </a>
+    {% endif %}
+
+    {% if is_editor %}
+        <a href="{% url 'eNews:unapproved_article_list' %}">
+            <button class="btn btn-secondary">Back to Unapproved Article List</button>
+        </a>
+    {% endif %}
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+</div>
+
+{% endblock %}

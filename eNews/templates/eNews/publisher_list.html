@@ -1,0 +1,27 @@
+<!-- list of publishers -->
+{% extends 'base.html' %}
+{% block title %}
+    Publisher List
+{% endblock %}
+
+{% block content %}
+    <h1>Publisher List</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <ul>
+        {% for publisher in publishers %}
+            <li>
+                <a href="{% url 'eNews:publisher' publisher.id %}">{{ publisher.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+<!-- Navigation Buttons -->
+ <div>
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+
+{% endblock %}

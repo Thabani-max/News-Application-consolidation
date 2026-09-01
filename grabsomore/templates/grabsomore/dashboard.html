@@ -1,0 +1,121 @@
+<!-- Dahsboard template -->
+{% extends 'base.html' %}
+{% block content %}
+<h1>Welcome, {% if request.user.is_authenticated %}{{ request.user.first_name }} {{ request.user.last_name }}{% endif %}</h1>
+
+<p>You are logged in</p>
+
+<form method="POST" action="{% url 'grabsomore:logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-secondary">Logout</button>
+</form>
+
+{% if not is_journalist %}
+    <div>
+        <p>Want to read some Articles?
+            <a href="{% url 'eNews:article_list' %}">
+                <button class="btn btn-primary"> Read Articles</button>
+            </a>
+        </p>
+    </div>
+{% endif %}
+
+{% if not is_journalist %}
+    <div>
+        <p>Want to view some Newsletters?
+            <a href="{% url 'eNews:newsletter_list' %}">
+                <button class="btn btn-primary"> View Newsletters</button>
+            </a>
+        </p>
+    </div>
+{% endif %}
+
+{% if is_reader %}
+    <div>
+        <p>Looking for your favourite Journalist?
+            <a href="{% url 'eNews:journalist_list' %}">
+                <button class="btn btn-primary"> View Journalists</button>
+            </a>
+        </p>
+    </div>
+{% endif %}
+
+<div>
+    <p>Looking for your favourite Publisher?
+        <a href="{% url 'eNews:publisher_list' %}">
+            <button class="btn btn-primary"> View Publishers</button>
+        </a>
+    </p>
+</div>
+
+{% if is_editor %}
+    <div>
+        <p>Want to review Articles?
+            <a href="{% url 'eNews:unapproved_article_list' %}">
+                <button class="btn btn-primary"> Review Articles</button>
+            </a>
+        </p>
+    </div>
+{% endif %}
+
+{% if is_editor %}
+    <div>
+        <p>Want to review Newsletters?
+            <a href="{% url 'eNews:unapproved_newsletter_list' %}">
+                <button class="btn btn-primary"> Review Newsletters</button>
+            </a>
+        </p>
+    </div>
+{% endif %}
+
+{% if is_editor %}
+    <div>
+        <p>Want to create a Publisher?
+            <a href="{% url 'eNews:create_publisher' %}">
+                <button class="btn btn-primary"> Create Publisher</button>
+            </a>
+        </p>
+    </div>
+{% endif %}
+
+{% if not is_reader %}
+    <div>
+        <p>Want to create a Newsletter?
+            <a href="{% url 'eNews:create_newsletter' %}">
+                <button class="btn btn-primary"> Create Newsletters</button>
+            </a>
+        </p>
+    </div>
+{% endif %}
+
+{% if is_journalist %}
+    <div>
+        <p>Want to write an Article?
+            <a href="{% url 'eNews:create_article' %}">
+                <button class="btn btn-primary"> Write Articles</button>
+            </a>
+        </p>
+    </div>
+{% endif %}
+
+{% if is_journalist %}
+    <div>
+        <p>Want to view your Articles?
+            <a href="{% url 'eNews:journalist_articles' %}">
+                <button class="btn btn-primary"> View Articles</button>
+            </a>
+
+        </p>
+    </div>
+{% endif %}
+
+{% if is_journalist %}
+    <div>
+        <p>Want to view your Newsletters?
+            <a href="{% url 'eNews:journalist_newsletters' %}">
+                <button class="btn btn-primary"> View Newsletters</button>
+            </a>
+        </p>
+    </div>
+{% endif %}
+{% endblock %}

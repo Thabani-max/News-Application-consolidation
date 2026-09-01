@@ -1,0 +1,27 @@
+<!-- list journalists -->
+{% extends 'base.html' %}
+{% block title %}
+    Journalist List
+{% endblock %}
+
+{% block content %}
+    <h1>Journalist List</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <ul>
+        {% for journalist in journalists %}
+            <li>
+                <a href="{% url 'eNews:journalist' journalist.id %}">{{ journalist.journalist.first_name }} {{ journalist.journalist.last_name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+<!-- Navigation Buttons -->
+ <div>
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+
+{% endblock %}

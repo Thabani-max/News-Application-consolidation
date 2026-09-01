@@ -1,0 +1,36 @@
+/* Basic styling for the body */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4d3;
+  margin: 0;
+  padding: 0;
+}
+
+/* Styling for main headings */
+h1 {
+  color: #333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Styling for subheadings */
+h2 {
+  color: #333;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
+}
+
+/* Styling for paragraphs */
+p {
+  color: #333;
+  margin-bottom: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Hover effect for the link */
+a:hover {
+  text-decoration: underline;
+}

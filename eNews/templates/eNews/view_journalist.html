@@ -1,0 +1,63 @@
+<!-- journalist page -->
+{% extends 'base.html' %}
+{% block title %}
+    View Journalist
+{% endblock %}
+
+{% block content %}
+    <h1>Journalist: {{ journalist.name }}</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    {% if not is_subscribed %}
+        <form action="{% url 'eNews:subscribe_to_journalist' journalist.id %}">
+            <button type="submit" class="btn btn-success">Subscribe</button>
+        </form>
+    {% endif %}
+
+    {% if is_subscribed %}
+        <form action="{% url 'eNews:unsubscribe_from_journalist' journalist.id %}">
+            <button type="submit" class="btn btn-danger">Unsubscribe</button>
+        </form>
+    {% endif %}
+
+    <h2>Articles:</h2><br>
+    <ul>
+        {% if articles %}
+            {% for article in articles %}
+                <li>
+                    <a href="{% url 'eNews:article' article.id %}">{{ article.title }}</a>
+                    <p>{{ article.content }}</p>
+                </li>
+            {% endfor %}
+        {% else %}
+            <p>No articles found for this journalist.</p>
+        {% endif %}
+    </ul>
+
+    <h2>Newsletters:</h2><br>
+    <ul>
+        {% if newsletters %}
+            {% for newsletter in newsletters %}
+                <li>
+                    <a href="{% url 'eNews:newsletter' newsletter.id %}">{{ newsletter.title }}</a>
+                    <p>{{ newsletter.description }}</p>
+                </li>
+            {% endfor %}
+        {% else %}
+            <p>No newsletters found for this journalist.</p>
+        {% endif %}
+    </ul>
+
+<!-- Navigation Buttons -->
+ <div>
+
+    <a href="{% url 'eNews:journalist_list' %}">
+        <button class="btn btn-secondary">Back to Journalist List</button>
+    </a>
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+<!-- confirm_delete_publisher -->
+{% extends 'base.html' %}
+{% block title %}
+    Confirm Publisher Deletion
+{% endblock %}
+
+{% block content %}
+    <h1>Confirm Publisher Deletion</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <p>Are you sure you want to delete the publisher "{{ publisher.name }}"?</p>
+
+    <form method="POST" action="{% url 'eNews:confirm_publisher_deletion' publisher.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+
+    <form method="POST" action="{% url 'eNews:publisher' publisher.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Cancel</button>
+    </form>
+{% endblock %}

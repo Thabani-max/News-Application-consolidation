@@ -1,0 +1,30 @@
+<!-- list of unapproved newsletters -->
+{% extends 'base.html' %}
+{% block title %}
+    Unapproved Newsletter List
+{% endblock %}
+
+{% block content %}
+    <h1>Unapproved Newsletter List</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <ul>
+        {% for newsletter in newsletters %}
+            {% if not newsletter.approved %}
+                <li>
+                    <a href="{% url 'eNews:newsletter' newsletter.id %}">{{ newsletter.title }}</a>
+                    <p>{{ newsletter.description }}</p>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+<!-- Navigation Buttons -->
+ <div>
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+
+{% endblock %}

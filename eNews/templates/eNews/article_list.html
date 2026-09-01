@@ -1,0 +1,39 @@
+<!-- list all articles -->
+{% extends 'base.html' %}
+{% block title %}
+    Article List
+{% endblock %}
+
+{% block content %}
+    <h1>Article List</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <ul>
+        {% for article in articles %}
+            <li>
+                <a href="{% url 'eNews:article' article.id %}">{{ article.title }}</a>
+                <p>{{ article.content }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+<!-- Navigation Buttons -->
+ <div>
+
+    {% if not is_reader %}
+    <a href="{% url 'eNews:unapproved_article_list' %}">
+        <button class="btn btn-secondary">Unapproved Articles</button>
+    </a>
+    {% endif %}
+
+    {% if is_journalist %}
+    <a href="{% url 'eNews:create_article' %}">
+        <button class="btn btn-primary">Create Article</button>
+    </a>
+    {% endif %}
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+{% endblock %}

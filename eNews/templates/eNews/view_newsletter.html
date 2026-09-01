@@ -1,0 +1,96 @@
+<!-- newsletter page -->
+{% extends 'base.html' %}
+{% block title %}
+    View Newsletter
+{% endblock %}
+{% block content %}
+    <h1>View Newsletter</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <p>Title: {{ newsletter.title }}</p>
+    <p>Description: {{ newsletter.description }}</p>
+    <p>Author: {{ newsletter.author.first_name }} {{ newsletter.author.last_name }}</p>
+    {% if newsletter.publisher != None %}
+        <p>Publisher: {{ newsletter.publisher.name }}</p>
+    {% endif %}
+
+    <p>Articles:</p>
+    {% if articles %}
+        <ul>
+            {% for article in articles %}
+                <li>
+                    <a href="{% url 'eNews:article' article.id %}">{{ article.title }}</a>
+                    <p>{{ article.content }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No articles found for this newsletter.</p>
+    {% endif %}
+
+<div style="margin-top: 10px;">
+    {% if not is_reader %}
+        <form action="{% url 'eNews:edit_newsletter' newsletter.id %}">
+            <button type="submit" class="btn btn-primary">Update Newsletter</button>
+        </form>
+    {% endif %}
+</div>
+
+<div style="margin-top: 10px;">
+    {% if not is_reader %}
+        <form action="{% url 'eNews:delete_newsletter' newsletter.id %}">
+            <button type="submit" class="btn btn-danger">Delete Newsletter</button>
+        </form>
+    {% endif %}
+</div>
+
+<div style="margin-top: 10px;">
+    {% if is_journalist %}
+        {% if newsletter.approved is False %}
+            {% if newsletter.publisher == None %}
+                {% if newsletter.author == request.user %}
+                    <form method="post" action="{% url 'eNews:publish_independent_newsletter' newsletter.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Publish Independently</button>
+                    </form>
+                {% endif %}
+            {%  endif %}
+        {% endif %}
+    {%  endif %}
+</div>
+
+<div style="margin-top: 10px;">
+    {% if is_editor %}
+        {% if newsletter.approved is False %}
+        {% if newsletter.publisher != None %}
+            {% if newsletter.author == request.user %}
+                <form method="post" action="{% url 'eNews:publish_affiliated_newsletter' newsletter.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Publish Newsletter</button>
+                </form>
+            {% endif %}
+        {% endif %}
+        {% endif %}
+    {%  endif %}
+</div>
+<!-- Navigation Buttons -->
+ <div style="margin-top: 10px;">
+
+    {% if not is_reader %}
+        <a href="{% url 'eNews:unapproved_newsletter_list' %}">
+            <button class="btn btn-secondary">Back to Unapproved Newsletter List</button>
+        </a>
+    {% endif %}
+
+    {% if not is_journalist %}
+        <a href="{% url 'eNews:newsletter_list' %}">
+            <button class="btn btn-secondary">Back to Newsletter List</button>
+        </a>
+    {% endif %}
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+
+{% endblock %}

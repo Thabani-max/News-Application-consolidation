@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}
+    Confirm Article Deletion
+{% endblock %}
+
+{% block content %}
+    <h1>Confirm Article Deletion</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <p>Are you sure you want to delete the article "{{ article.title }}"?</p>
+
+    <form method="POST" action="{% url 'eNews:confirm_article_deletion' article.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" >Delete</button>
+    </form>
+
+    <form method="POST" action="{% url 'eNews:article' article.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Cancel</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!-- list all newsletters -->
+{% extends 'base.html' %}
+{% block title %}
+    Newsletter List
+{% endblock %}
+
+{% block content %}
+    <h1>Newsletter List</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <ul>
+        {% for newsletter in newsletters %}
+            <li>
+                <a href="{% url 'eNews:newsletter' newsletter.id %}">{{ newsletter.title }}</a>
+                <p>{{ newsletter.description }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+<!-- Navigation Buttons -->
+ <div>
+
+    {% if is_journalist %}
+    <a href="{% url 'eNews:create_newsletter' %}">
+        <button class="btn btn-primary">Create Newsletter</button>
+    </a>
+    {% endif %}
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+
+{% endblock %}

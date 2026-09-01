@@ -1,0 +1,34 @@
+<!-- create newsletter -->
+{% extends 'base.html' %}
+{% block title %}
+    Create Newsletter
+{% endblock %}
+
+{% block content %}
+    <h1>Create Newsletter</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    {% if not is_reader %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Create</button>
+        </form>
+    {%  endif %}
+
+
+<!-- Navigation Buttons -->
+ <div style="margin-top: 10px;">
+
+    {% if is_editor %}
+        <a href="{% url 'eNews:newsletter_list' %}">
+            <button class="btn btn-secondary">Back to Newsletter List</button>
+        </a>
+    {% endif %}
+
+    <a href="{% url 'grabsomore:dashboard' %}">
+        <button class="btn btn-secondary">Back To Home Page</button>
+    </a>
+
+ </div>
+
+{% endblock %}

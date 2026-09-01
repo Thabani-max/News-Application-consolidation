@@ -1,0 +1,133 @@
+<!-- publisher page -->
+{% extends 'base.html' %}
+{% block title %}
+    View Publisher
+{% endblock %}
+
+{% block content %}
+    <h1>Publisher: {{ publisher.name }}</h1>
+    {% if error %}<p style="color: red;">{{ error }}</p>{% endif %}
+    <h3>Description: {{ publisher.description }}</h3>
+
+    {% if is_reader %}
+        {% if not is_subscribed %}
+            <form action="{% url 'eNews:subscribe_to_publisher' publisher.id %}">
+                <button type="submit" class="btn btn-success">Subscribe</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    {% if is_reader %}
+        {% if is_subscribed %}
+            <form action="{% url 'eNews:unsubscribe_from_publisher' publisher.id %}">
+                <button type="submit" class="btn btn-danger">Unsubscribe</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    {% if is_journalist %}
+        {% if not is_associated_with_publisher %}
+            <form action="{% url 'eNews:associate_journalist_with_publisher' publisher.id %}">
+                <button type="submit" class="btn btn-success">Associate with Publisher</button>
+            </form>
+        {% endif %}
+    {%  endif %}
+
+    {% if is_editor %}
+        {% if not is_associated_with_publisher %}
+            <form action="{% url 'eNews:associate_editor_with_publisher' publisher.id %}">
+                <button type="submit" class="btn btn-success">Associate with Publisher</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    {% if is_journalist %}
+            {% if is_associated_with_publisher %}
+                <form action="{% url 'eNews:dissociate_journalist_with_publisher' publisher.id %}">
+                    <button type="submit" class="btn btn-danger">Dissociate from Publisher</button>
+                </form>
+            {% endif %}
+    {% endif %}
+
+    {% if is_editor %}
+            {% if is_associated_with_publisher %}
+                <form action="{% url 'eNews:dissociate_editor_with_publisher' publisher.id %}">
+                    <button type="submit" class="btn btn-danger">Dissociate from Publisher</button>
+                </form>
+            {% endif %}
+    {% endif %}
+
+    <h2>Articles:</h2><br>
+    <ul>
+        {% if articles %}
+            {% for article in articles %}
+                <li>
+                    <a href="{% url 'eNews:article' article.id %}">{{ article.title }}</a>
+                    <p>{{ article.content }}</p>
+                </li>
+            {% endfor %}
+        {% else %}
+            <p>No articles found for this publisher.</p>
+        {% endif %}
+    </ul>
+
+    <h2>Newsletters:</h2><br>
+    <ul>
+        {% if newsletters %}
+            {% for newsletter in newsletters %}
+                <li>
+                    <a href="{% url 'eNews:newsletter' newsletter.id %}">{{ newsletter.title }}</a>
+                    <p>{{ newsletter.description }}</p>
+                </li>
+            {% endfor %}
+        {% else %}
+            <p>No newsletters found for this publisher.</p>
+        {% endif %}
+    </ul>
+
+    {% if is_reader %}
+    <h2>Journalists:</h2><br>
+
+    <ul>
+        {% if journalists %}
+            {% for journalist in journalists %}
+                <li>
+                    <a href="{% url 'eNews:journalist' journalist.id %}">{{ journalist.journalist.first_name }} {{ journalist.journalist.last_name }}</a>
+                </li>
+            {% endfor %}
+        {% else %}
+            <p>No journalists found for this publisher.</p>
+        {% endif %}
+    </ul>
+    {% endif %}
+
+    {% if is_editor %}
+        <div>
+            <a href="{% url 'eNews:update_publisher' publisher.id %}">
+                <button class="btn btn-primary"> Update Publisher</button>
+            </a>
+        </div>
+    {% endif %}
+
+    {%  if is_editor %}
+        <div>
+            <a href="{% url 'eNews:delete_publisher' publisher.id %}">
+                <button class="btn btn-danger"> Delete Publisher</button>
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Navigation Buttons -->
+     <div>
+
+        <a href="{% url 'eNews:publisher_list' %}">
+            <button class="btn btn-secondary">Back to Publisher List</button>
+        </a>
+
+        <a href="{% url 'grabsomore:dashboard' %}">
+            <button class="btn btn-secondary">Back To Home Page</button>
+        </a>
+
+     </div>
+
+{% endblock %}
